@@ -1,0 +1,24 @@
+require 'rake/clean'
+
+TSs = FileList["*.ts"]
+JSs = TSs.ext("js").pathmap("obj/%p")
+
+directory 'obj'
+RUNs = []
+TSs.zip(JSs).each do |ts, js|
+  file js => ts do
+    sh "tsc #{ts} --outFile #{js}"
+  end
+
+  run = File.basename(ts, '.*').to_sym
+  RUNs << run
+  desc "Run #{run}"
+  task run => js do
+    sh "node #{js}"
+    puts
+  end
+end
+
+task :default => RUNs
+CLEAN.include(JSs)
+
