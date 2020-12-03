@@ -1,0 +1,21 @@
+a01 b01 c01 d01 1
+some data
+a01 b01 c01 d02 2
+some data 1
+some data 2
+a01 b01 c01 d03 3
+some data 1
+some data 2
+some data 3
+a01 b01 c02 d01 2
+some data 1
+some data 2
+a01 b01 c02 d02 4
+some data 1
+some data 2
+some data 3
+some data 4
+a01 b01 c03 d01 3
+some data 1
+some data 2
+some data 3
