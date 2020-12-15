@@ -4,15 +4,13 @@ require 'fileutils'
 require 'scanf'
 
 XY = Struct.new(:x, :y)
-class XYArray < Array
-end
+Category = Struct.new(:c1, :c2, :c3, :t4)
 
 # Comment for NKC
 class NKC
   attr_reader :cat_data
 
   HeaderSize = 4
-  Category = Struct.new(:c1, :c2, :c3, :t4)
   def self.parse_data(path)
     nkcs = NKCArray.new
     row_col = read_data_csv(path)
@@ -43,7 +41,7 @@ class NKC
     @name = name
     @key = key
 
-    @cat_data = Category.new(XYArray.new, XYArray.new, XYArray.new, XYArray.new)
+    @cat_data = Category.new([], [], [], [])
   end
 
   def to_s
