@@ -4,9 +4,13 @@ services:
   # FastAPI
   api:
     container_name: "api"
-    build: .
+    build: ./api/build/
     restart: always
     tty: true
     ports:
       - 8000:8000
+    volumes:
+      - type: bind
+        source: /mnt/c/Users/Public/prac/docker/python_fastapi/api/app
+        target: /app
 

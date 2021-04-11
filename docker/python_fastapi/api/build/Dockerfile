@@ -3,12 +3,11 @@ FROM python:3-slim
 
 WORKDIR /app
 
-COPY requirements.txt .
 # コンテナ内で必要なパッケージをインストール
-RUN pip install --no-cache-dir --trusted-host pypi.python.org -r requirements.txt
+RUN pip install --no-cache-dir --trusted-host pypi.python.org uvicorn fastapi
 
-COPY main.py .
+# COPY main.py .
 EXPOSE 8000
-# FastAPIを8000ポートで待機
+# FastAPIを待機
 CMD ["uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", "8000"]
 
