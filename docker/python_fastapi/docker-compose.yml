@@ -8,9 +8,26 @@ services:
     restart: always
     tty: true
     ports:
-      - 8000:8000
+      - 8000:80
     volumes:
       - type: bind
         source: /mnt/c/Users/Public/GitHub/prac/docker/python_fastapi/api/app
         target: /app
+
+  # PostgreSQL
+  db:
+    container_name: "db"
+    image: postgres:13.2-alpine
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: p@ssword
+      LANG: ja_JP.UTF-8
+    volumes:
+      - type: bind
+        source: /mnt/c/Users/Public/GitHub/prac/docker/python_fastapi/db/data
+        target: /var/lib/postgresql/data
+      - type: bind
+        source: /mnt/c/Users/Public/GitHub/prac/docker/python_fastapi/db/docker-entrypoint-initdb.d
+        target: /docker-entrypoint-initdb.d
 
