@@ -21,12 +21,14 @@ services:
     ports:
       - 5432:5432
     environment:
-      POSTGRES_PASSWORD: p@ssword
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: p@ssw0rd
+      POSTGRES_DB: document_db
       LANG: ja_JP.UTF-8
     volumes:
       - type: bind
         source: /mnt/c/Users/Public/GitHub/prac/docker/python_fastapi/db/data
-        target: /var/lib/postgresql/data
+        target: /data
       - type: bind
         source: /mnt/c/Users/Public/GitHub/prac/docker/python_fastapi/db/docker-entrypoint-initdb.d
         target: /docker-entrypoint-initdb.d

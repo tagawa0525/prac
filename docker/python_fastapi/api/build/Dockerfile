@@ -4,7 +4,14 @@ FROM python:3.9.4-slim
 WORKDIR /app
 
 # コンテナ内で必要なパッケージをインストール
-RUN pip install --no-cache-dir --trusted-host pypi.python.org uvicorn fastapi
+RUN apt update && apt install -y \
+		libpq5 \
+	&& apt-get clean \
+	&& rm -rf /var/lib/apt/lists/*
+
+RUN pip install --no-cache-dir --trusted-host pypi.python.org \
+		uvicorn fastapi  \
+		databases psycopg2-binary sqlalchemy asyncpg
 
 # FastAPIを待機
 CMD ["uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", "80"]
