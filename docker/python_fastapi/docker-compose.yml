@@ -33,3 +33,19 @@ services:
         source: /mnt/c/Users/Public/GitHub/prac/docker/python_fastapi/db/docker-entrypoint-initdb.d
         target: /docker-entrypoint-initdb.d
 
+  # React
+  web:
+    container_name: "web"
+    image: node:15.14.0-buster-slim
+    ports:
+      - 3000:3000
+    environment:
+      LANG: ja_JP.UTF-8
+      TZ: Asia/Tokyo
+      NODE_ENV: deveropment
+    volumes:
+      - type: bind
+        source: /mnt/c/Users/Public/GitHub/prac/docker/python_fastapi/web/app
+        target: /app
+    command: sh -c "cd /app && yarn start"
+
