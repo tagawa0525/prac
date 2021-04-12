@@ -4,7 +4,8 @@ FROM python:3.9.4-slim
 WORKDIR /app
 
 # コンテナ内で必要なパッケージをインストール
-RUN apt update && apt install -y \
+RUN apt-get update \
+	&& apt-get install -y --no-install-recommends \
 		libpq5 \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/*
