@@ -21,6 +21,7 @@ class UserUpdate(BaseModel):
 # select用のrequest model
 # selectでは、パスワード不要のため定義しない。
 class UserSelect(BaseModel):
+    id : int
     username: str
     email: str
     is_active: bool
