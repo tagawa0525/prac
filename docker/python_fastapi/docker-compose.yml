@@ -11,8 +11,11 @@ services:
       - 8000:80
     volumes:
       - type: bind
-        source: /mnt/c/Users/Public/GitHub/prac/docker/python_fastapi/api/app
+        # source: /mnt/c/Users/Public/GitHub/prac/docker/python_fastapi/api/app
+        source: C:\Users\Public\GitHub\prac\docker\python_fastapi\api\app
         target: /app
+    command: "uvicorn main:app --reload --host 0.0.0.0 --port 80"
+
 
   # PostgreSQL
   db:
@@ -25,13 +28,13 @@ services:
       POSTGRES_PASSWORD: p@ssw0rd
       POSTGRES_DB: document_db
       LANG: ja_JP.UTF-8
-    volumes:
-      - type: bind
-        source: /mnt/c/Users/Public/GitHub/prac/docker/python_fastapi/db/data
-        target: /data
-      - type: bind
-        source: /mnt/c/Users/Public/GitHub/prac/docker/python_fastapi/db/docker-entrypoint-initdb.d
-        target: /docker-entrypoint-initdb.d
+    # volumes:
+    #   - type: bind
+    #     source: /mnt/c/Users/Public/GitHub/prac/docker/python_fastapi/db/data
+    #     target: /data
+    #   - type: bind
+    #     source: /mnt/c/Users/Public/GitHub/prac/docker/python_fastapi/db/docker-entrypoint-initdb.d
+    #     target: /docker-entrypoint-initdb.d
 
   # React
   web:
@@ -43,9 +46,11 @@ services:
       LANG: ja_JP.UTF-8
       TZ: Asia/Tokyo
       NODE_ENV: deveropment
+      CHOKIDAR_USEPOLLING: 'true'
     volumes:
       - type: bind
-        source: /mnt/c/Users/Public/GitHub/prac/docker/python_fastapi/web/app
+        # source: /mnt/c/Users/Public/GitHub/prac/docker/python_fastapi/web/app
+        source: C:\Users\Public\GitHub\prac\docker\python_fastapi\web\app
         target: /app
     command: sh -c "cd /app && yarn start"
 
