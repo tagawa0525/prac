@@ -11,8 +11,8 @@ services:
       - 8000:80
     volumes:
       - type: bind
-        # source: /mnt/c/Users/Public/GitHub/prac/docker/python_fastapi/api/app
-        source: C:\Users\Public\GitHub\prac\docker\python_fastapi\api\app
+        source: /mnt/c/Users/Public/GitHub/prac/docker/python_fastapi/api/app
+        # source: C:\Users\Public\GitHub\prac\docker\python_fastapi\api\app
         target: /app
     command: "uvicorn main:app --reload --host 0.0.0.0 --port 80"
 
@@ -49,8 +49,8 @@ services:
       CHOKIDAR_USEPOLLING: 'true'
     volumes:
       - type: bind
-        # source: /mnt/c/Users/Public/GitHub/prac/docker/python_fastapi/web/app
-        source: C:\Users\Public\GitHub\prac\docker\python_fastapi\web\app
+        source: /mnt/c/Users/Public/GitHub/prac/docker/python_fastapi/web/app
+        # source: C:\Users\Public\GitHub\prac\docker\python_fastapi\web\app
         target: /app
     command: sh -c "cd /app && yarn start"
 
