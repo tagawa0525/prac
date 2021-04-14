@@ -5,16 +5,14 @@ services:
   api:
     container_name: "api"
     build: ./api/build/
-    restart: always
-    tty: true
     ports:
-      - 8000:80
+      - 8000:8000
     volumes:
       - type: bind
         source: /mnt/c/Users/Public/GitHub/prac/docker/python_fastapi/api/app
         # source: C:\Users\Public\GitHub\prac\docker\python_fastapi\api\app
         target: /app
-    command: "uvicorn main:app --reload --host 0.0.0.0 --port 80"
+    command: "uvicorn main:app --reload --host 0.0.0.0"
 
 
   # PostgreSQL
