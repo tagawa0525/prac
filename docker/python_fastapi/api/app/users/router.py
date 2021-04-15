@@ -40,7 +40,7 @@ async def users_create(user: UserCreate, database: Database = Depends(get_connec
     query = users.insert()
     values = get_users_insert_dict(user)
     ret = await database.execute(query, values)
-    return {**user.dict()}
+    return await users_findone(ret, database)
 
 # usersを更新します。
 @router.post("/users/update", response_model=UserSelect)

@@ -1,13 +1,22 @@
 import React from 'react';
 import './App.css';
 import { DataGrid, GridColDef } from '@material-ui/data-grid';
+import CreateForm from './components/CreateForm';
+import User from './components/User';
 
-class App extends React.Component<{}, { users: any[] }> {
+
+class App extends React.Component<{}, {
+  users: User[],
+  userInput: User
+}> {
   constructor(props: {} | Readonly<{}>) {
     super(props);
     this.state = {
-      users: []
+      userInput: new User(),
+      users: [],
     };
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleUserSubmit = this.handleUserSubmit.bind(this);
   }
 
   get axios() {
@@ -25,10 +34,9 @@ class App extends React.Component<{}, { users: any[] }> {
 
   componentDidMount() {
     this.axios.get('/users')
-      .then((results: { data: any[]; }) => {
-        console.log(results.data);
+      .then((res: { data: any; }) => {
         this.setState({
-          users: results.data
+          users: res.data
         });
       })
       .catch((data: any) => {
@@ -38,11 +46,10 @@ class App extends React.Component<{}, { users: any[] }> {
 
   getUsers() {
     const columns: GridColDef[] = [
-      { field: 'id',       headerName: "id",   width:  50 },
+      { field: 'id', headerName: "id", width: 50 },
       { field: 'username', headerName: "name", width: 150 },
-      { field: 'email',    headerName: "mail", width: 200 },
+      { field: 'email', headerName: "mail", width: 200 },
     ]
-    console.log(this.state)
 
     return (
       <div style={{ height: 400, width: '100%' }}>
@@ -51,11 +58,55 @@ class App extends React.Component<{}, { users: any[] }> {
     );
   }
 
+  handleInputChange(
+    itemName: keyof User,
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) {
+    const newUser = Object.assign({}, this.state.userInput)
+    switch (itemName) {
+      case 'username':
+        newUser.username = e.target.value;
+        break;
+      case 'email':
+        newUser.email = e.target.value;
+        break;
+      case 'password':
+        newUser.password = e.target.value;
+        break;
+    }
+
+    this.setState({
+      userInput: newUser
+    });
+  }
+
+  handleUserSubmit(e: { preventDefault: () => void; }) {
+    e.preventDefault();
+    const userJson = JSON.stringify(this.state.userInput);
+
+    this.axios.post("/users/create", userJson)
+      .then((res: { [x: string]: any; }) => {
+        const users = this.state.users.slice();
+        users.push(res["data"]);
+        this.setState({
+          users: users,
+          userInput: new User(),
+        });
+      })
+      .catch((data: any) => {
+        console.log(data)
+      });
+  }
 
   render() {
     return (
       <div className="App">
         {this.getUsers()}
+        <CreateForm
+          user={this.state.userInput}
+          onChange={this.handleInputChange}
+          onSubmit={this.handleUserSubmit}
+        />
       </div>
     );
   }
