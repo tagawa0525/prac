@@ -18,6 +18,14 @@ class UserUpdate(BaseModel):
     is_active: bool
     is_superuser: bool
 
+# delete用のrequest model
+class UserDelete(BaseModel):
+    id : int
+    username: str
+    email: str
+    is_active: bool
+    is_superuser: bool
+
 # select用のrequest model
 # selectでは、パスワード不要のため定義しない。
 class UserSelect(BaseModel):

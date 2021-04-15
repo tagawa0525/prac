@@ -49,7 +49,7 @@ function CreateForm(props: {
             <Button
               variant="contained"
               color="primary"
-              endIcon={<SendIcon />}
+              startIcon={<SendIcon />}
               onClick={props.onSubmit}
             >
               CREATE

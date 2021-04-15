@@ -5,7 +5,7 @@ from typing import List
 from starlette.requests import Request
 
 from .models import users
-from .schemas import UserCreate, UserUpdate, UserSelect
+from .schemas import UserCreate, UserUpdate, UserDelete, UserSelect
 
 from databases import Database
 
@@ -53,7 +53,8 @@ async def users_update(user: UserUpdate, database: Database = Depends(get_connec
 
 # usersを削除します。
 @router.post("/users/delete")
-async def users_delete(user: UserUpdate, database: Database = Depends(get_connection)):
+async def users_delete(user: UserDelete, database: Database = Depends(get_connection)):
+    print(user)
     query = users.delete().where(users.columns.id==user.id)
     ret = await database.execute(query)
     return {"result": "delete success"}
