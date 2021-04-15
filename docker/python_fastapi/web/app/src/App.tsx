@@ -1,8 +1,8 @@
 import React from 'react';
 import './App.css';
 import { DataGrid, GridColDef, GridRowSelectedParams } from '@material-ui/data-grid';
-import Button from '@material-ui/core/Button';
-import DeleteIcon from '@material-ui/icons/Delete';
+import { Button } from '@material-ui/core';
+import { Create, Update, Delete } from '@material-ui/icons';
 import CreateForm from './components/CreateForm';
 import User from './components/User';
 
@@ -53,15 +53,16 @@ class App extends React.Component<{}, {
       { field: 'id', headerName: "id", width: 75 },
       { field: 'username', headerName: "name", width: 150 },
       { field: 'email', headerName: "mail", width: 200 },
-      // { field: del(props), headerName: "delete", width: 200 },
     ]
 
     return (
-      <div style={{ height: 400, width: '100%' }}>
+      <div style={{ height: 1110, width: '100%' }}>
         <DataGrid
           rows={this.state.users}
           columns={columns}
-          pageSize={5}
+          pageSize={40}
+          //autoHeight={true}
+          rowHeight={25}
           hideFooterSelectedRowCount={true}
           onRowSelected={(newSelection) => {
             this.setSelectionModel(newSelection);
@@ -117,10 +118,29 @@ class App extends React.Component<{}, {
       });
   }
 
+  handleUserUpdate(id: number, user: User, e: { preventDefault: () => void; }) {
+    e.preventDefault();
+    user.id = id
+    const userJson = JSON.stringify(user);
+    this.axios.post('/users/update', userJson)
+      .then((res: { [x: string]: User; }) => {
+        const users = this.state.users.slice();
+        const index = users.findIndex(post => post["id"] === user.id);
+        users.splice(index, 1, res["data"]);
+
+        this.setState({
+          users: users
+        });
+      })
+      .catch((data: any) => {
+        console.log(data);
+      });
+  }
+
   handleUserDelete(id: number, e: { preventDefault: () => void; }) {
     e.preventDefault();
-    const user = this.state.users.filter(function(element, index, array) {
-      return(element.id === id)
+    const user = this.state.users.filter(function (element, index, array) {
+      return (element.id === id)
     })[0];
     const userJson = JSON.stringify(user);
     this.axios.post("/users/delete/", userJson)
@@ -144,21 +164,34 @@ class App extends React.Component<{}, {
     return (
       <div className="App">
         {this.getUsers()}
+        <br></br>
+
+        <CreateForm
+          user={this.state.userInput}
+          onChange={this.handleInputChange}
+        />
+        <br></br>
+
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<Create />}
+          onClick={this.handleUserSubmit}
+        > CREATE </Button>
 
         <Button
           variant="contained"
           color="secondary"
-          startIcon={<DeleteIcon />}
+          startIcon={<Delete />}
           onClick={(e) => this.handleUserDelete(this.state.userSelectId, e)}
-        >
-          DELETE
-        </Button>
-        <CreateForm
-          user={this.state.userInput}
-          onChange={this.handleInputChange}
-          onSubmit={this.handleUserSubmit}
-        />
+        > DELETE </Button>
 
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<Update />}
+          onClick={(e) => this.handleUserUpdate(this.state.userSelectId, this.state.userInput, e)}
+        > UPDATE </Button>
       </div>
     );
   }
